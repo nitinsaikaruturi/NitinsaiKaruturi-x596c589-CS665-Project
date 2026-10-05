@@ -101,7 +101,7 @@ In every join below, the join condition is `ActivityType.type_id = ActivityLog.t
 
 **Query 1: List all food activity types.**
 
-$$\sigma_{category = \text{'Food'}}(\text{ActivityType})$$
+$$\sigma_{category = 'Food'}(\mathrm{ActivityType})$$
 
 **SQL equivalent:**
 
@@ -113,7 +113,7 @@ SELECT * FROM ActivityType WHERE category = 'Food';
 
 **Query 2: Show log entries after September 29, 2026.**
 
-$$\sigma_{log\_date > \text{'2026-09-29'}}(\text{ActivityLog})$$
+$$\sigma_{log\char95 date > '2026-09-29'}(\mathrm{ActivityLog})$$
 
 **SQL equivalent:**
 
@@ -125,7 +125,7 @@ SELECT * FROM ActivityLog WHERE log_date > '2026-09-29';
 
 **Query 3: Show full log history with activity names and units.**
 
-$$\pi_{name,\ log\_date,\ quantity,\ unit}\left(\text{ActivityType} \bowtie_{\text{ActivityType.type\_id} = \text{ActivityLog.type\_id}} \text{ActivityLog}\right)$$
+$$\pi_{name,\ log\char95 date,\ quantity,\ unit}\bigl(\mathrm{ActivityType}\ \bowtie_{\mathrm{ActivityType}.type\char95 id = \mathrm{ActivityLog}.type\char95 id}\ \mathrm{ActivityLog}\bigr)$$
 
 **SQL equivalent:**
 
@@ -139,7 +139,7 @@ JOIN ActivityLog l ON t.type_id = l.type_id;
 
 **Query 4: Show only transport logs.**
 
-$$\pi_{name,\ log\_date,\ quantity}\left(\sigma_{category = \text{'Transport'}}(\text{ActivityType}) \bowtie_{\text{ActivityType.type\_id} = \text{ActivityLog.type\_id}} \text{ActivityLog}\right)$$
+$$\pi_{name,\ log\char95 date,\ quantity}\bigl(\sigma_{category = 'Transport'}(\mathrm{ActivityType})\ \bowtie_{\mathrm{ActivityType}.type\char95 id = \mathrm{ActivityLog}.type\char95 id}\ \mathrm{ActivityLog}\bigr)$$
 
 **SQL equivalent:**
 
@@ -154,7 +154,7 @@ WHERE t.category = 'Transport';
 
 **Query 5: Find high-emission activity types (over 1 kg CO₂ per unit) that have been logged.**
 
-$$\pi_{name,\ category}\left(\sigma_{kg\_co2\_per\_unit > 1}\left(\text{ActivityType} \bowtie_{\text{ActivityType.type\_id} = \text{ActivityLog.type\_id}} \text{ActivityLog}\right)\right)$$
+$$\pi_{name,\ category}\bigl(\sigma_{kg\char95 co2\char95 per\char95 unit > 1}\bigl(\mathrm{ActivityType}\ \bowtie_{\mathrm{ActivityType}.type\char95 id = \mathrm{ActivityLog}.type\char95 id}\ \mathrm{ActivityLog}\bigr)\bigr)$$
 
 **SQL equivalent:**
 
@@ -177,7 +177,7 @@ WHERE t.kg_co2_per_unit > 1;
 
 The app's headline feature is the weekly CO₂ total, which needs quantity × kg_co2_per_unit summed per week. Standard relational algebra cannot express a sum, so this uses the extended aggregation operator:
 
-$$\gamma_{WEEK(log\_date),\ SUM(quantity \times kg\_co2\_per\_unit)\ \rightarrow\ weekly\_co2}\left(\text{ActivityLog} \bowtie_{\text{ActivityLog.type\_id} = \text{ActivityType.type\_id}} \text{ActivityType}\right)$$
+$$\gamma_{WEEK(log\char95 date),\ SUM(quantity \times kg\char95 co2\char95 per\char95 unit)\ \rightarrow\ weekly\char95 co2}\bigl(\mathrm{ActivityLog}\ \bowtie_{\mathrm{ActivityLog}.type\char95 id = \mathrm{ActivityType}.type\char95 id}\ \mathrm{ActivityType}\bigr)$$
 
 Using a Monday–Sunday week definition, all five sample records fall within the week of September 28–October 4, 2026.
 
